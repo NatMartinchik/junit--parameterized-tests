@@ -3,7 +3,6 @@ package com.martinchikn;
 import com.codeborne.selenide.Condition;
 import com.codeborne.selenide.Selenide;
 import com.martinchikn.domain.MenuItems;
-import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.*;
 
@@ -11,7 +10,6 @@ import java.util.stream.Stream;
 
 import static com.codeborne.selenide.Condition.visible;
 import static com.codeborne.selenide.Selenide.*;
-import static com.codeborne.selenide.WebDriverConditions.currentFrameUrl;
 import static com.codeborne.selenide.WebDriverConditions.urlContaining;
 
 
