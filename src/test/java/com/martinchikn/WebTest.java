@@ -2,22 +2,17 @@ package com.martinchikn;
 
 import com.codeborne.selenide.Condition;
 import com.codeborne.selenide.Selenide;
-import com.codeborne.selenide.SelenideElement;
-import com.codeborne.selenide.WebDriverRunner;
+import com.martinchikn.domain.MenuItems;
 import org.junit.jupiter.api.AfterEach;
-import org.junit.jupiter.api.Assertions;
-import org.junit.jupiter.api.DisplayName;
-import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.*;
 
-import java.util.List;
 import java.util.stream.Stream;
 
 import static com.codeborne.selenide.Condition.visible;
-import static com.codeborne.selenide.Selenide.$;
-import static com.codeborne.selenide.Selenide.$$;
-
+import static com.codeborne.selenide.Selenide.*;
+import static com.codeborne.selenide.WebDriverConditions.currentFrameUrl;
+import static com.codeborne.selenide.WebDriverConditions.urlContaining;
 
 
 public class WebTest {
@@ -78,4 +73,22 @@ public class WebTest {
                 .shouldBe(visible);
 
     }
+
+    @EnumSource(MenuItems.class)
+    @ParameterizedTest()
+    void openSearchMenuTest(MenuItems testData) {
+//        Предусловия:
+        Selenide.open("https://onefootball.com/en/home");
+//        Шаги:
+        $("[enterkeyhint=\"search\"]").click();
+        $("[enterkeyhint=\"search\"]").setValue("Chelsea");
+        $(".search-result-list__item").click();
+//        Ожидаемый результат:
+        $$(".page-tabs__list-item")
+                .find(Condition.text(testData.tabName))
+                .click();
+
+        webdriver().shouldHave(urlContaining(testData.tabName));
+    }
+
 }
