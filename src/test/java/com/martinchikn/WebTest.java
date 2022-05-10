@@ -26,8 +26,8 @@ public class WebTest {
             "Chelsea",
             "Real"
     })
-    @ParameterizedTest(name = "Searching for team {0}")
-    void teamSearchTest(String testData) {
+    @ParameterizedTest(name = "Searching for {0}")
+    void wordSearchTest(String testData) {
 //        Предусловия:
         Selenide.open("https://onefootball.com/en/home");
 //        Шаги:
@@ -39,4 +39,22 @@ public class WebTest {
                 .shouldBe(visible);
     }
 
+    @CsvSource(value = {
+            "Chelsea, Chelsea Women",
+            "Real, Real Madrid"
+    })
+
+    @ParameterizedTest(name = "Searching for {0}, expected team in results: {1}")
+    void teamsSearchTest(String testData, String expectedResult) {
+//        Предусловия:
+        Selenide.open("https://onefootball.com/en/home");
+//        Шаги:
+        $("[enterkeyhint=\"search\"]").click();
+        $("[enterkeyhint=\"search\"]").setValue(testData);
+//        Ожидаемый результат:
+        $$(".search-result-list__item")
+                .find(Condition.text(expectedResult))
+                .shouldBe(visible);
+
+    }
 }
