@@ -57,4 +57,25 @@ public class WebTest {
                 .shouldBe(visible);
 
     }
+
+    static Stream<Arguments> methodSourceExampleTest() {
+        return Stream.of(
+                Arguments.of(1860, "1860 München"),
+                Arguments.of(1860, "1860 Rosenheim")
+        );
+    }
+    @MethodSource("methodSourceExampleTest")
+    @ParameterizedTest
+    void methodSourceExampleTest(Integer first, String second) {
+//        Предусловия:
+        Selenide.open("https://onefootball.com/en/home");
+//        Шаги:
+        $("[enterkeyhint=\"search\"]").click();
+        $("[enterkeyhint=\"search\"]").setValue(String.valueOf(first));
+//        Ожидаемый результат:
+        $$(".search-result-list__item")
+                .find(Condition.text(second))
+                .shouldBe(visible);
+
+    }
 }
